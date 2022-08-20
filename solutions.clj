@@ -180,3 +180,59 @@ defn fib [n]
   (flatten-seq s)))
 
 
+;; Problem 29
+
+;; The following solutions work in a REPL but not in the online evaluator
+
+;; My best guess is the REPL cannot load java classes as it runs in a browser
+
+(#(filter (fn is-uc [chr] (Character/isUpperCase chr)) %) "aAbB")
+
+;; However, the reason this solution doesn't work remains a mystery to me
+;; It works in the REPL and I would assume the clojure standard library
+;; is independent of the JVM. Javascript users probably need to join strings
+;; as well
+
+;; clojure.string/join works in the browser
+
+(defn filter-uc [s] 
+  (clojure.string/join 
+   "" 
+   ((fn as-seq [chars] 
+     (filter 
+       (fn is-uc [chr] 
+         (or 
+           (= chr \A) (= chr \B) (= chr \C) (= chr \D) (= chr \E)
+           (= chr \F) (= chr \G) (= chr \H) (= chr \I) (= chr \J)
+           (= chr \K) (= chr \L) (= chr \M) (= chr \N) (= chr \O)
+           (= chr \P) (= chr \U) (= chr \R) (= chr \S) (= chr \T)
+           (= chr \U) (= chr \V) (= chr \W) (= chr \X) (= chr \Y)
+           (= chr \Z))) 
+       chars)) 
+    s)))
+
+;; Same as above
+
+(fn filter-uc [s]
+  (letfn [
+       (is-uc [chr] 
+         (or 
+           (= chr \A) (= chr \B) (= chr \C) (= chr \D) (= chr \E)
+           (= chr \F) (= chr \G) (= chr \H) (= chr \I) (= chr \J)
+           (= chr \K) (= chr \L) (= chr \M) (= chr \N) (= chr \O)
+           (= chr \P) (= chr \U) (= chr \R) (= chr \S) (= chr \T)
+           (= chr \U) (= chr \V) (= chr \W) (= chr \X) (= chr \Y)
+           (= chr \Z)))
+       
+       (filter-chars [s]
+         (cond
+           (empty? s) ""
+           (is-uc (first s)) (str (first s) (filter-chars (rest s)))
+           :else (filter-chars (rest s))))] 
+
+       (filter-chars s))) 
+
+;; The web apps handling of strings is weird
+;; Perhaps a disparity between the JS and JVM implementations of Clojure
+; (rest "asdf")
+; user=> ("s" "d" "f")
