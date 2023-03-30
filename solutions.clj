@@ -241,8 +241,30 @@ defn fib [n]
 
 ; rcd -> remove consecutire duplicates
 (defn rcd [sequence]
-	(cond
-        (empty? sequence) sequence
-        (empty? (rest sequence)) sequence
-        (= (first sequence) (first (rest sequence))) (rcd (rest sequence))
-        :else (cons (first sequence) (rcd (rest sequence)))))
+  (cond
+    (empty? sequence)
+      sequence
+    (empty? (rest sequence))
+      sequence
+    (= (first sequence) (first (rest sequence)))
+      (rcd (rest sequence))
+    :else
+      (cons (first sequence) (rcd (rest sequence)))))
+
+;; Problem 31
+
+
+(defn pack [sequence]
+  (cond
+    (empty? sequence)
+      sequence
+    (empty? (rest sequence))
+      (list sequence)
+    (= (first sequence) (first (rest sequence)))
+      (let
+        [res (pack (rest sequence))]
+        (cons
+          (cons (first sequence) (first res))
+          (rest res)))
+    :else
+      (cons (list (first sequence)) (pack (rest sequence)))))
