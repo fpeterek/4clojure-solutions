@@ -236,3 +236,13 @@ defn fib [n]
 ;; Perhaps a disparity between the JS and JVM implementations of Clojure
 ; (rest "asdf")
 ; user=> ("s" "d" "f")
+
+;; Problem 30
+
+; rcd -> remove consecutire duplicates
+(defn rcd [sequence]
+	(cond
+        (empty? sequence) sequence
+        (empty? (rest sequence)) sequence
+        (= (first sequence) (first (rest sequence))) (rcd (rest sequence))
+        :else (cons (first sequence) (rcd (rest sequence)))))
