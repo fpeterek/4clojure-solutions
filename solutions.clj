@@ -268,3 +268,16 @@ defn fib [n]
           (rest res)))
     :else
       (cons (list (first sequence)) (pack (rest sequence)))))
+
+;; Problem 32
+
+(defn dupl-items [sequence]
+  (cond
+    (empty? sequence)
+      sequence
+      :else
+        (cons
+          (first sequence)
+          (cons
+            (first sequence)
+            (dupl-items (rest sequence))))))
